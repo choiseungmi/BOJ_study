@@ -1,0 +1,30 @@
+// https://www.acmicpc.net/problem/2011
+// 다이나믹 프로그래밍
+// 조건부를 활용하여 이전의 자리수에서 더해주는 
+
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <string>
+using namespace std;
+
+int main() {
+	cin.tie(0);
+	cin.sync_with_stdio(false);
+
+	string s;
+	cin >> s;
+	int l = s.length();
+	vector<int> v(l+1, 0);
+	v[0] = 1; v[1] = 1;
+	if (s[0] == '0') v[1] = 0;
+	for (int i = 2; i <= l; i++) {
+		if(s[i-1]!='0')
+			v[i] = v[i - 1];
+		if ((s[i-1] <= '6' && s[i-2] == '2')||( s[i-2]=='1') ){
+			v[i] = (v[i]+v[i - 2])%1000000;
+		}
+	}
+	cout << v[l] << "\n";
+	return 0;
+}
