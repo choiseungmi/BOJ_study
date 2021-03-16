@@ -1,0 +1,47 @@
+// https://www.acmicpc.net/problem/5567
+// 구현, 그래프 이론, 그래프 탐색, 너비 우선 탐색
+// 그래프 제작 -> 너비우선 탐색 실행
+
+#include <iostream>
+#include <queue>
+#include <vector>
+using namespace std;
+
+bool g[501][501] = { false, };
+bool visit[501] = { false, };
+
+int main() {
+	cin.tie(0);
+	cin.sync_with_stdio(false);
+
+	int n, m, t1, t2;
+	cin >> n >> m;
+	int ans = 0;
+	for (int i = 0; i < m; i++) {
+		cin >> t1 >> t2;
+		g[t1][t2] = 1;
+		g[t2][t1] = 1;
+	}
+	queue<int> q;
+	visit[1] = 1;
+	for (int i = 2; i <= n; i++) {
+		if (g[1][i]) {
+			ans++;
+			q.push(i);
+			visit[i] = 1;
+		}
+	}
+	while (!q.empty()) {
+		int f = q.front();
+		q.pop();
+		for (int i = 2; i <= n; i++) {
+			if (g[f][i] && !visit[i]) {
+				ans++;
+				visit[i] = 1;
+			}
+		}
+	}
+	cout << ans << "\n";
+
+	return 0;
+}
