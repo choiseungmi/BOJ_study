@@ -1,0 +1,47 @@
+// https://www.acmicpc.net/problem/2606
+// 그래프 이론, 그래프 탐색, 너비 우선 탐색, 깊이 우선 탐색
+// 너비 우선 탐색
+//그래프 생성 -> 방문한 곳 visit 체크 -> 연결되어 있는 곳 방문 및 visit 체크 반복 -> 방문 개수 출력
+
+
+#include <string>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+int main(int argc, char** argv)
+{
+	cin.tie(0);
+	cout.tie(0);
+	cin.sync_with_stdio(false);
+	int n, m;
+	cin >> n >> m;
+	vector<vector<bool>> v(n+1, vector<bool>(n+1, 0));
+	while (m--) {
+		int t1, t2;
+		cin >> t1>> t2;
+		v[t1][t2] = 1;
+		v[t2][t1] = 1;
+	}
+	int ans = 0;
+	vector<bool> visit(n+1,0);
+	queue<int> q;
+	q.push(1);
+	while (!q.empty()) {
+		int t = q.front();
+		q.pop();
+		visit[t] = 1;
+		for (int i = 1; i <= n; i++) {
+			if (!visit[i] && v[t][i]) {
+				q.push(i);
+				visit[i] = 1;
+				ans++;
+			}
+		}
+	}
+	cout << ans;
+
+	return 0;
+}
