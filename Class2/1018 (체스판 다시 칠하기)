@@ -1,0 +1,39 @@
+<https://www.acmicpc.net/problem/1018>
+// 브루트포스 알고리즘
+// 전부 탐색 확인
+
+#include<iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+	int n, m;
+	cin >> n>>m;
+	vector<vector<char>> v(n, vector<char>(m,0));
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			cin >> v[i][j];
+		}
+	}
+	int ans = 64;
+	for (int i = 0; i <= n - 8; i++) {
+		for (int j = 0; j <= m - 8; j++) {
+			int a = 0, b = 0;
+			for (int k = 0; k < 8; k++) {
+				for (int w = 0; w < 8; w++) {
+					if ((k + i + w + j) % 2 == 0) {
+						if (v[k + i][w + j] == 'B') a++;
+						else b++;
+					}
+					else {
+						if (v[k + i][w + j] == 'B') b++;
+						else a++;
+					}
+				}
+			}
+			ans = min(min(ans, a), b);
+		}
+	}
+	cout << ans << "\n";
+	return 0;
+}
