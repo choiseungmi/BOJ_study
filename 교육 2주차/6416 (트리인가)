@@ -1,0 +1,55 @@
+https://www.acmicpc.net/problem/6416
+// 트리
+// map 함수를 이용한 트리 여부 판단
+// 루트노드가 있는지 판단, 엣지-1 == 노드, 부모노드가 한 개인지 판단
+
+#include <vector>
+#include <iostream>
+#include <map>
+#include <set>
+using namespace std;
+
+int main() {
+	cin.tie(0);
+	cin.sync_with_stdio(false);
+
+	int u, v, k = 1;
+	cin >> u >> v;
+	while (u != -1 && v != -1) {
+		bool check = true;
+		int n = 0;
+		map<int, int> m;
+		while (u != 0 && v != 0) {
+			if (u == v) check = false;
+			if (m.find(v) == m.end() || m[v]==-1) {
+				if (m.find(u) != m.end()) {
+					if (m[u] == v) check = false;
+				}
+				else {
+					m[u] = -1;
+				}
+				m[v] = u;
+			}
+			else {
+				check = false;
+			}
+			cin >> u >> v;
+			n++;
+		}
+		int cnt = 0;
+		for (auto i = m.begin(); i != m.end(); i++) {
+			if (i->second== -1) cnt++;
+		}
+		if (n!=0 && (n != m.size()-1 || cnt != 1) ){
+			check = false;
+		}
+		if (check)
+			cout << "Case " << k << " is a tree.\n";
+		else
+			cout << "Case " << k << " is not a tree.\n";
+		k++;
+		cin >> u >> v;
+
+	}
+	return 0;
+}
