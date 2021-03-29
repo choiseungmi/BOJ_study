@@ -1,0 +1,63 @@
+https://www.acmicpc.net/problem/1756
+// 구현, 이분 탐색, 시뮬레이션
+// 동적계획법을 이용한 재배열, 이분탐색
+
+#include <iostream>
+#include <algorithm>
+#include <map>
+#include <vector>
+using namespace std;
+
+int finding(vector<pair<int, int>> temp, int start, int end, int x) {
+	int ans = -1;
+	while (start <= end) {
+		int mid = (start + end) / 2;
+		cout << temp[mid].first << " " << temp[mid].second << endl;
+
+		if (temp[mid].second < x) {
+			start = mid + 1;
+		}
+		else {
+			if(ans==-1 || temp[mid].first>ans)
+				ans = temp[mid].first;
+			end = mid - 1;
+		}
+	}
+	return ans;
+}
+
+int main() {
+	int d, n;
+	cin >> d >> n;
+	vector<int> dep(d, 0);
+	vector<int> p(n, 0);
+	cin >> dep[0];
+	for (int i = 1; i < d; i++) {
+		cin >> dep[i];
+		if (dep[i] > dep[i - 1]) dep[i] = dep[i - 1];
+	}
+	int idx = d;
+	for (int i = 0; i < n; i++) {
+		cin >> p[i];
+		int ans = -1, start=0, end=idx-1;
+		while (start <= end) {
+			int mid = (start + end) / 2;
+			
+			if (dep[mid] < p[i]) {
+				end = mid - 1;
+			}
+			else {
+				ans = mid;
+				start = mid + 1;
+			}
+		}
+		idx = ans;
+		if (idx == -1) {
+			cout << 0 << "\n";
+			return 0;
+		}
+	}
+	cout << idx +1 << endl;
+
+	return 0;
+}
