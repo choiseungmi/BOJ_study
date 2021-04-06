@@ -1,0 +1,66 @@
+https://www.acmicpc.net/problem/1922
+
+#include <vector>
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#define INF 100000000
+using namespace std;
+
+struct info {
+	int a, b, c;
+};
+struct cmp {
+	bool operator()(info &x, info&y) {
+		return x.c > y.c;
+	}
+};
+
+info temp;
+int n, m, e, a, b, c;
+int v[1001] = { 0, };
+
+int find(int a) {
+	if (v[a] == a)return a;
+	return v[a] = find(v[a]);
+}
+
+void make_union(int a, int b) {
+	a = find(a);
+	b = find(b);
+	if (a < b)v[b] = a;
+	else v[a] = b;
+}
+
+int main() {
+	cin.tie(0);
+	cin.sync_with_stdio(false);
+	
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) {
+		v[i] = i;
+	}
+	priority_queue<info, vector<info>, cmp> pq;
+	for (int i = 0; i < m; i++) {
+		cin >> a >> b >> c;
+		temp.a = a;
+		temp.b = b;
+		temp.c = c;
+		pq.push(temp);
+	}
+	long long ans = 0;
+	while (!pq.empty()) {
+		int ca = pq.top().a;
+		int cb = pq.top().b;
+		int cc = pq.top().c;
+		pq.pop();
+		int pa = find(ca);
+		int pb = find(cb);
+		if (pa == pb) continue;
+		make_union(ca, cb);
+		ans += cc;
+	}
+	cout << ans << "\n";
+	
+	return 0;
+}
