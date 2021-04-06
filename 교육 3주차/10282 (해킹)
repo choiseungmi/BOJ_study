@@ -1,0 +1,49 @@
+https://www.acmicpc.net/problem/10282
+
+#include <vector>
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#define INF 100000000
+using namespace std;
+
+int main() {
+	cin.tie(0);
+	cin.sync_with_stdio(false);
+	
+	int t;
+	cin >> t;
+	while (t--) {
+		int n, m, r, n1, n2, w;
+		cin >> n >> m >> r;
+		vector<vector<pair<int, int>>> v(n + 1);
+		vector<int> info(n + 1,0), dist(n + 1, INF);
+		for (int i = 1; i <= m; i++) {
+			cin >> n1 >> n2 >> w;
+			v[n2].push_back({ n1, w });
+		}
+		priority_queue<pair<int, int>> pq;
+		dist[r] = 0;
+		pq.push({ 0,r });
+		while (!pq.empty()) {
+			auto temp = pq.top();
+			pq.pop();
+			for (auto p : v[temp.second]) {
+				int next = p.first, cost = p.second - temp.first;
+				if (dist[next] > cost) {
+					dist[next] = cost;
+					pq.emplace( -dist[next],next );
+				}
+			}
+		}
+		int ans = 0, mx = 0;
+		for (int i = 1; i <= n; i++) {
+			if (dist[i] != INF) {
+				ans++;
+				mx = max(mx, dist[i]);
+			}
+		}
+		cout << ans << " " << mx << "\n";
+	}
+	return 0;
+}
