@@ -1,0 +1,62 @@
+https://www.acmicpc.net/problem/1043
+
+#include <vector>
+#include <iostream>
+#include <set>
+#include <algorithm>
+#include <string>
+#include <queue>
+#define INF 0x7fffffff
+using namespace std;
+
+bool tf[51] = { 0, };
+bool g[51][51] = { 0, };
+bool tp[51] = { 0, };
+
+int main() {
+	cin.tie(0);
+	cin.sync_with_stdio(false);
+
+	int n, m, t, temp, temp2;
+	cin >> n >> m>>t;
+	queue<int> q;
+
+	if (t > 0) {
+		for (int i = 0; i < t; i++) {
+			cin >> temp;
+			tf[temp] = 1;
+		}
+	}
+	for (int i = 0; i < m; i++) {
+		cin >> temp;
+		for (int j = 0; j < temp; j++) {
+			cin >> temp2;
+			g[i][temp2] = 1;
+			if (tf[temp2] && !tp[i]) {
+				tp[i] = 1;
+				q.push(i);
+			}
+		}
+	}
+	while (!q.empty()) {
+		temp = q.front();
+		q.pop();
+		for (int i = 1; i <= n; i++) {
+			if (!tf[i] && g[temp][i]) {
+				tf[i] = 1;
+				for (int j = 0; j < m; j++) {
+					if (!tp[j] && g[j][i]) {
+						tp[j] = 1;
+						q.push(j);
+					}
+				}
+			}
+		}
+	}
+	int ans = 0;
+	for (int i = 0; i < m; i++) {
+		if (!tp[i]) ans++;
+	}
+	cout << ans << "\n";
+	return 0;
+}
