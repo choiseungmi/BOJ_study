@@ -1,0 +1,43 @@
+https://www.acmicpc.net/problem/10775
+
+#include <vector>
+#include <iostream>
+#include <map>
+using namespace std;
+
+int v[100001] = { 0 };
+
+int find(int u) {
+	if (v[u] == u) return u;
+	return v[u] = find(v[u]);
+}
+
+void merge(int u, int x) {
+	int pu = find(u);
+	int pv = find(x);
+	v[pv] = pu;
+}
+
+int main() {
+	cin.tie(0);
+	cin.sync_with_stdio(false);
+	
+	int g, p, gi;
+	cin >> g >> p;
+	for (int i = 1; i <= g; i++) {
+		v[i] = i;
+	}
+	int i = 0;
+	for (; i < p; i++) {
+		cin >> gi;
+		int parent = find(gi);
+		if (parent != 0) {
+			merge(parent - 1, parent);
+		}
+		else {
+			break;
+		}
+	}
+	cout << i;
+	return 0;
+}
