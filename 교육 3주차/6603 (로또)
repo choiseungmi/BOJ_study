@@ -1,0 +1,46 @@
+https://www.acmicpc.net/problem/6603
+
+#include <vector>
+#include <iostream>
+#include <set>
+#include <algorithm>
+#include <string>
+#include <sstream>
+#define INF 0x7fffffff
+using namespace std;
+
+void dfs(vector<int> v, vector<int> sum, int n, int start) {
+	if (n == 6) {
+		for (int i = 0; i < 6; i++) {
+			cout << sum[i] << " ";
+		}
+		cout << "\n";
+	}
+	for (int i = start; i < v.size(); i++) {
+		sum.push_back(v[i]);
+		dfs(v, sum, n + 1, i + 1);
+		sum.pop_back();
+	}
+}
+
+int main() {
+	cin.tie(0);
+	cin.sync_with_stdio(false);
+
+	string s;
+	getline(cin, s);
+	while (s != "0") {
+		stringstream ss;
+		ss.str(s);
+		int num, k;
+		vector<int> v, sum;
+		ss >> num; k = num;
+		while (ss >> num) {
+			v.push_back(num);
+		}
+		dfs(v, sum, 0, 0);
+        cout<<"\n";
+		getline(cin, s);
+	}
+	return 0;
+}
