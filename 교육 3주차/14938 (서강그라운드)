@@ -1,0 +1,51 @@
+https://www.acmicpc.net/problem/14938
+
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#define INF 100000000
+using namespace std;
+
+int item[101] = { 0 };
+int v[101][101] = { 0, };
+
+int main() {
+	cin.tie(0);
+	cin.sync_with_stdio(false);
+	
+	int n, m, r, n1,n2,w;
+	cin >> n >> m >> r;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			if (i != j) v[i][j] = INF;
+		}
+	}
+	for (int i = 1; i <= n; i++) {
+		cin >> item[i];
+	}
+	for (int i = 0; i < r; i++) {
+		cin >> n1 >> n2 >> w;
+		v[n1][n2] = w;
+		v[n2][n1] = w;
+	}
+	for (int k = 1; k <= n; k++) {
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				if(v[i][k]+v[k][j]<v[i][j])
+					v[i][j] =v[i][k] + v[k][j];
+			}
+		}
+	}
+	int ans = 0; 
+	for (int i = 1; i <= n; i++) {
+		int temp = item[i];
+		for (int j = 1; j <= n; j++) {
+			if (i!=j && v[i][j] <= m) {
+				temp += item[j];
+			}
+		}
+		ans = max(ans, temp);
+	}
+	cout << ans << endl;
+	return 0;
+}
